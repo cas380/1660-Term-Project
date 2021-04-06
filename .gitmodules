@@ -1,0 +1,3 @@
+[submodule "microservices-gui"]
+	path = microservices-gui
+	url = https://github.com/cas380/microservices-gui

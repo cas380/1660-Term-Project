@@ -1,0 +1,17 @@
+# https://docs.docker.com/engine/reference/builder/
+# https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
+
+# A Dockerfile must begin with a FROM instruction
+# The FROM instruction specifies the Parent Image from which you are building. 
+FROM ubuntu:18.04
+
+# FROM ubuntu:18.04
+COPY test.txt /app
+# RUN make /app
+# CMD python /app/app.py
+
+RUN ls
+RUN echo $HOME
+
+# run this in cmd line
+# docker build .
