@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.3'
 
 networks:
   gui-to-www:
@@ -13,23 +13,13 @@ services:
       - "8787:8787"
     networks: 
       - gui-to-www
-      
-  # SSH default port
-  # my-browser:
-    # build: 
-      # context: ./firefox
-      # args:
-        # SSH_PASS: root
-    # environment:
-      # DISPLAY: "172.19.224.1:0.0"
-      # BROWSER: "firefox"
-    # networks:
-      # - gui-to-www
     
   microservices-gui:
     build: ./microservices-gui
     depends_on:
       - RStudio
+    volumes:
+      - ${XSRV}
     environment:
       DISPLAY: ${DISPLAY_IP}
       BROWSER: "firefox"
