@@ -1,11 +1,12 @@
 #!/bin/bash
 
 # The X server is native to Linux...
-echo DISPLAY_IP=:0.0 > config/.env
+xhost +
+echo DISPLAY_IP=:0 > config/.env
 echo XSRV=/tmp/.X11-unix:/tmp/.X11-unix/:ro >> config/.env
 
 # Make sure nothing is already up (does nothing otherwise)
-docker-compose --env-file config/.env down
+docker-compose --env-file config/.env down --remove-orphans
 
 # Build and run the containers
 docker-compose --env-file config/.env build

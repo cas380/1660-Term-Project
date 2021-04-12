@@ -1,3 +1,6 @@
 [submodule "microservices-gui"]
 	path = microservices-gui
 	url = https://github.com/cas380/microservices-gui
+[submodule "sas-container-recipes"]
+	path = sas-container-recipes
+	url = https://github.com/sassoftware/sas-container-recipes

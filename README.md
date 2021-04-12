@@ -17,6 +17,7 @@ If the script doesn't work, here's the steps it goes through that you can do man
    * I think these values could be wrong if you don't have default installations, though I don't know what else they would be
    * In my VM, `DISPLAY_IP`, which is used to set the `DISPLAY` variable of containers is set like so: `DISPLAY_IP=:0.0`
    * In my VM, `XSRV`, which is used to connect to the X server of your machine, is set like so: `XSRV=/tmp/.X11-unix:/tmp/.X11-unix/:ro`
+   * I also had to run `xhost +` in order to give my containers the proper access control to the X server
 2. Run `docker-compose --env-file config/.env build` to create the images
 3. Run `docker-compose --env-file config/.env up` to run the containers
 4. When finished, run `docker-compose --env-file config/.env down` to clean up the containers

@@ -5,6 +5,7 @@ networks:
     driver: "bridge"
     
 services:
+  # Done!
   RStudio:
     image: rocker/rstudio
     environment:
@@ -13,13 +14,89 @@ services:
       - "8787:8787"
     networks: 
       - gui-to-www
+
+  # Needs to actually be spyder? and login?
+  #Spyder:
+  #  image: compdatasci/spyder-desktop
+  #  ports:
+  #    - "6080:6080" # Spyder
+  #  networks: 
+  #    - gui-to-www
     
+  ibm_sas:
+    build: ./sas-container-recipes
+    volumes:
+      - ${XSRV}
+    environment:
+      DISPLAY: ${DISPLAY_IP}
+    networks: 
+      - gui-to-www
+
+  Git:
+    image: bitnami/git
+    volumes:
+      - ${XSRV}
+    environment:
+      DISPLAY: ${DISPLAY_IP}
+    networks: 
+      - gui-to-www
+      # docker build -t bitnami/git:latest 'https://github.com/bitnami/bitnami-docker-git.git#master:2/debian-10'
+
+  # Need token...
+  Jupyter:
+    image: jupyter/minimal-notebook
+    ports:
+      - "8888:8888"
+    networks: 
+      - gui-to-www
+
+  #Orange:
+
+  #VS_Code:
+
+  #Hadoop:
+
+  #Spark:
+
+  #Tableau:
+
+  #Sonar:
+
+  # 
+  Tensorflow:
+    image: tensorflow/tensorflow
+    ports:
+      - "8889:8888"
+    networks: 
+      - gui-to-www
+
+  # Done!
+  Markdown:
+    image: v4tech/markdown-editor
+    ports:
+      - "12345:80"
+    networks: 
+      - gui-to-www
+
   microservices-gui:
     build: ./microservices-gui
     depends_on:
       - RStudio
+      #- Spyder
+      - ibm_sas
+      - Git
+      - Jupyter
+      #- Orange
+      #- VS_Code
+      #- Hadoop
+      #- Spark
+      #- Tableau
+      #- Sonar
+      #- Tensorflow
+      - Markdown
     volumes:
       - ${XSRV}
+      - /var/run/docker.sock:/var/run/docker.sock # grant access to docker
     environment:
       DISPLAY: ${DISPLAY_IP}
       BROWSER: "firefox"
