@@ -23,26 +23,26 @@ services:
   #  networks: 
   #    - gui-to-www
     
-  ibm_sas:
-    build: ./sas-container-recipes
-    volumes:
-      - ${XSRV}
-    environment:
-      DISPLAY: ${DISPLAY_IP}
-    networks: 
-      - gui-to-www
+  #ibm_sas:
+  #  build: ./sas-container-recipes
+  #  volumes:
+  #    - ${XSRV}
+  #  environment:
+  #    DISPLAY: ${DISPLAY_IP}
+  #  networks: 
+  #    - gui-to-www
 
-  Git:
-    image: bitnami/git
-    volumes:
-      - ${XSRV}
-    environment:
-      DISPLAY: ${DISPLAY_IP}
-    networks: 
-      - gui-to-www
+  #Git:
+  #  image: bitnami/git
+  #  volumes:
+  #    - ${XSRV}
+  #  environment:
+  #    DISPLAY: ${DISPLAY_IP}
+  #  networks: 
+  #    - gui-to-www
       # docker build -t bitnami/git:latest 'https://github.com/bitnami/bitnami-docker-git.git#master:2/debian-10'
 
-  # Need token...
+  # Grab the token from the CLI output to access the service
   Jupyter:
     image: jupyter/minimal-notebook
     ports:
@@ -83,8 +83,8 @@ services:
     depends_on:
       - RStudio
       #- Spyder
-      - ibm_sas
-      - Git
+      #- ibm_sas
+      #- Git
       - Jupyter
       #- Orange
       #- VS_Code
