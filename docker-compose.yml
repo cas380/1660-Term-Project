@@ -3,9 +3,11 @@ version: '3.3'
 networks:
   gui-to-www:
     driver: "bridge"
+
+volumes:
+  run:
     
 services:
-  # Done!
   RStudio:
     image: rocker/rstudio
     environment:
@@ -16,13 +18,12 @@ services:
       - gui-to-www
 
   # Needs to actually be spyder? and login?
-  #Spyder:
-  #  image: compdatasci/spyder-desktop
-  #  ports:
-  #    - "6080:6080" # Spyder
-  #  networks: 
-  #    - gui-to-www
-    
+  Spyder:
+    build: ./my-spyder
+    image: my-spyder
+    networks: 
+      - gui-to-www
+  
   #ibm_sas:
   #  build: ./sas-container-recipes
   #  volumes:
@@ -32,15 +33,10 @@ services:
   #  networks: 
   #    - gui-to-www
 
-  #Git:
-  #  image: bitnami/git
-  #  volumes:
-  #    - ${XSRV}
-  #  environment:
-  #    DISPLAY: ${DISPLAY_IP}
-  #  networks: 
-  #    - gui-to-www
-      # docker build -t bitnami/git:latest 'https://github.com/bitnami/bitnami-docker-git.git#master:2/debian-10'
+  Git:
+    image: bitnami/git
+    networks: 
+      - gui-to-www
 
   # Grab the token from the CLI output to access the service
   Jupyter:
@@ -52,25 +48,62 @@ services:
 
   #Orange:
 
-  #VS_Code:
+  VS_Code:
+    image: codercom/code-server
+    ports:
+      - "8080:8080"
+    volumes:
+      - $HOME/.config:/home/coder/.config
+      - $PWD:/home/coder/project
+    user: 1000:1000 # "$(id -u):$(id -g)"
+    environment:
+      DOCKER_USER: $USER
+    networks:
+      - gui-to-www
 
   #Hadoop:
 
-  #Spark:
-
-  #Tableau:
-
-  #Sonar:
-
-  # 
-  Tensorflow:
-    image: tensorflow/tensorflow
-    ports:
-      - "8889:8888"
+  Spark: 
+    image: bitnami/spark
     networks: 
       - gui-to-www
 
-  # Done!
+  Tableau:
+    image: dimtoolsinc/tableau-server:2018-2-3
+    volumes:
+      - run:/run
+      - /sys/fs/cgroup:/sys/fs/cgroup
+    restart: always
+    ports:
+      - 120:120
+      - 8850:8850
+    privileged: true
+    networks:
+      - gui-to-www
+
+  SonarQube:
+    image: sonarqube
+    environment:
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
+    ports:
+      - "9000:9000"
+    networks: 
+      - gui-to-www
+  # Fails! Starts before Qube despite dependency
+  SonarCloud:
+    image: sonarsource/sonar-scanner-cli
+    depends_on:
+      - SonarQube
+    #ports:
+    #  - "9000:9000"
+    networks: 
+      - gui-to-www
+
+  Tensorflow:
+    image: tensorflow/tensorflow
+    networks: 
+      - gui-to-www
+
   Markdown:
     image: v4tech/markdown-editor
     ports:
@@ -81,19 +114,19 @@ services:
   microservices-gui:
     build: ./microservices-gui
     depends_on:
-      - RStudio
-      #- Spyder
-      #- ibm_sas
-      #- Git
-      - Jupyter
-      #- Orange
-      #- VS_Code
-      #- Hadoop
-      #- Spark
-      #- Tableau
-      #- Sonar
-      #- Tensorflow
-      - Markdown
+      - RStudio     # WORKING
+      - Spyder      # WORKING
+      #- ibm_sas    # unimpl
+      - Git         # WORKING
+      - Jupyter     # WORKING
+      #- Orange     # unimpl
+      - VS_Code     # WORKING
+      #- Hadoop     # unimpl
+      - Spark       # WORKING
+      - Tableau     # WORKING
+      - SonarQube   # Sorta works
+      - Tensorflow  # WORKING
+      - Markdown    # WORKING
     volumes:
       - ${XSRV}
       - /var/run/docker.sock:/var/run/docker.sock # grant access to docker

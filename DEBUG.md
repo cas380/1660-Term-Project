@@ -1,4 +1,5 @@
 # Debugging Docker
+#### (This is a reference for me)
 
  * `docker inspect container_name` 
 
@@ -27,5 +28,21 @@ something like `firefox 172.24.0.3:8787`.
    - Removes the corresponding image.
    
  * `docker run -e DISPLAY=:0 -v /tmp/.X11-unix:/tmp/.X11-unix/:ro 1660-term-project_microservices-gui`
- 
+
    - Run GUI container on its lonesome
+
+ * `xterm -hold -e ls -li`
+
+   - Runs the command "ls -li" in a new xterminal. `-hold` prevents the terminal from closing on completion of the command.
+
+ * `docker ps -a -q -f status=exited | xargs docker rm`
+
+   - Remove all stopped containers.
+
+ * `docker image prune -a`
+
+   - Remove all dangling images.
+
+ * `tsm version -s https://localhost:8850`
+
+   - Ensure Tableau CLI is working.
