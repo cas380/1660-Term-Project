@@ -23,21 +23,19 @@ services:
     networks: 
       - gui-to-www
   
-  #ibm_sas:
-  #  build: ./sas-container-recipes
-  #  volumes:
-  #    - ${XSRV}
-  #  environment:
-  #    DISPLAY: ${DISPLAY_IP}
-  #  networks: 
-  #    - gui-to-www
+  ibm_sas:
+    build: ./my-sas
+    image: my-sas
+    ports:
+      - "2751:2751"
+    networks: 
+      - gui-to-www
 
   Git:
     image: bitnami/git
     networks: 
       - gui-to-www
 
-  # Grab the token from the CLI output to access the service
   Jupyter:
     image: jupyter/minimal-notebook
     ports:
@@ -107,13 +105,11 @@ services:
       - "9977:9000"
     networks: 
       - gui-to-www
-  # Fails! Starts before Qube despite dependency
-  SonarCloud:
+  # Starts before Qube despite dependency
+  SonarScan:
     image: sonarsource/sonar-scanner-cli
     depends_on:
       - SonarQube
-    #ports:
-    #  - "9000:9000"
     networks: 
       - gui-to-www
 
@@ -132,19 +128,19 @@ services:
   microservices-gui:
     build: ./microservices-gui
     depends_on:
-      - RStudio     # WORKING
-      - Spyder      # WORKING
-      #- ibm_sas    # unimpl
-      - Git         # WORKING
-      - Jupyter     # WORKING
-      #- Orange     # unimpl
-      - VS_Code     # WORKING
-      #- Hadoop     # unimpl
-      - Spark       # WORKING
-      - Tableau     # WORKING
-      - SonarQube   # Sorta works
-      - Tensorflow  # WORKING
-      - Markdown    # WORKING
+      - RStudio
+      - Spyder
+      - ibm_sas
+      - Git
+      - Jupyter
+      - Orange
+      - VS_Code
+      - Hadoop
+      - Spark
+      - Tableau
+      - SonarQube
+      - Tensorflow
+      - Markdown
     volumes:
       - ${XSRV}
       - /var/run/docker.sock:/var/run/docker.sock # grant access to docker

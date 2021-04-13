@@ -1,3 +1,9 @@
+Assumptions:
+project folder named 1660-term-project
+An X server is running (may need to run xinit?)
+Need docker and docker-compose
+change runProgram hardcoded env values
+
 # Running on Linux
 
 I started this project by developing on my Windows laptop and quickly realized I didn't have enough disk space 
