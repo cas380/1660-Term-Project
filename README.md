@@ -18,6 +18,10 @@ I've created a bash script `run-gui.sh` which connects to the native X server on
 docker commands. This should work across Linux machines, but if it fails for any reason, you can consult the 
 manual steps below. You can run the script by doing `./run-gui.sh` in the root directory.
 
+**IMPORTANT: Running the `run-gui.sh` script will overwrite the `config/.env` file with the values in `run-gui.sh` (this is done on lines 21 and 24 of the script, you can change the values there too if needed).**
+
+**IMPORTANT: This was mentioned in the video; if `docker` doesn't work without `sudo`, you can run the commented commands in `run-gui.sh` (or presumably just insert `sudo` at the beginning of all the docker commands in the script) to fix the issue.**
+
 ## Running manually on Linux
 
 If the script doesn't work, here's the steps it goes through that you can do manually:
