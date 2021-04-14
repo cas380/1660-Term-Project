@@ -1,3 +1,5 @@
+### You can watch my demo video [here](https://youtu.be/OWfLsCELqoI)!
+
 # Assumptions:
 * Whoever is attempting to run this is doing so on Linux (I did it on Ubuntu)
 * The project folder should be named `1660-Term-Project` (it will be after cloning from git)
